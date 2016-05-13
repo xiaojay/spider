@@ -37,7 +37,14 @@ for v in m:
     data[i]['name'] = v[1]
 
     data[i]['scientific_details'] = 'https://you.23andme.com' + v[0] + 'details/'
-    r = s.get(data[i]['scientific_details'])
+
+    while True:
+        try:
+            r = s.get(data[i]['scientific_details'])
+        except Exception:
+            continue
+        else:
+            break
 
     data[i]['gene'] = re.search(r'data-gene="([^"]+)"', r.text).group(1)
 
@@ -61,7 +68,14 @@ for v in m:
         n = 0
         for val in clinvar:
             data[i]['markers'][n]['clinvar'] = val
-            r = requests.get(data[i]['markers'][n]['clinvar'], timeout=120)
+
+            while True:
+                try:
+                    r = requests.get(data[i]['markers'][n]['clinvar'], timeout=120)
+                except Exception:
+                    continue
+                else:
+                    break
 
             if r.status_code == 200:
                 data[i]['markers'][n]['rsid'] = re.search(r'<a href="/variation/tools/1000genomes/[^"]+">([^<]+)</a>', r.text).group(1)
