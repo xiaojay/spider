@@ -8,9 +8,9 @@ import json
 import io
 
 import requests
-from sqlalchemy import Column, Integer, event, create_engine
+from sqlalchemy import Column, event, create_engine
 from sqlalchemy.ext.declarative import as_declarative, declared_attr
-from sqlalchemy.dialects.mysql import VARCHAR
+from sqlalchemy.dialects.mysql import INTEGER, VARCHAR
 from sqlalchemy.orm import sessionmaker
 
 
@@ -22,7 +22,7 @@ class Base(object):
         'mysql_collate': 'utf8_unicode_ci',
     }
 
-    id = Column(Integer, primary_key=True)
+    id = Column(INTEGER(unsigned=True), primary_key=True)
 
     @declared_attr
     def __tablename__(cls):
@@ -30,32 +30,32 @@ class Base(object):
 
 
 class GeneNames(Base):
-    approved_symbol = Column(VARCHAR(64), index=True)
-    approved_name = Column(VARCHAR(256), index=True)
-    chromosome = Column(VARCHAR(64), index=True)
-    hgnc_id = Column(VARCHAR(32))
-    accession_numbers = Column(VARCHAR(512))
-    ensembl_gene_id = Column(VARCHAR(32))
-    specialist_database_links = Column(VARCHAR(1024))
-    pubmed_ids = Column(VARCHAR(512))
-    ccds_ids = Column(VARCHAR(512))
-    vega_id = Column(VARCHAR(32))
-    entrez_gene_id = Column(VARCHAR(32))
-    omim_id = Column(VARCHAR(32))
-    refseq = Column(VARCHAR(32))
-    uniprot_id = Column(VARCHAR(32))
-    ucsc_id = Column(VARCHAR(32))
-    status = Column(VARCHAR(32))
+    approved_symbol = Column(VARCHAR(64), index=True, nullable=False)
+    approved_name = Column(VARCHAR(256), index=True, nullable=False)
+    chromosome = Column(VARCHAR(64), index=True, nullable=False, server_default='')
+    hgnc_id = Column(VARCHAR(32), nullable=False, server_default='')
+    accession_numbers = Column(VARCHAR(512), nullable=False, server_default='[]')
+    ensembl_gene_id = Column(VARCHAR(32), nullable=False, server_default='')
+    specialist_database_links = Column(VARCHAR(1024), nullable=False, server_default='{}')
+    pubmed_ids = Column(VARCHAR(512), nullable=False, server_default='[]')
+    ccds_ids = Column(VARCHAR(512), nullable=False, server_default='[]')
+    vega_id = Column(VARCHAR(32), nullable=False, server_default='')
+    entrez_gene_id = Column(VARCHAR(32), nullable=False, server_default='')
+    omim_id = Column(VARCHAR(32), nullable=False, server_default='')
+    refseq = Column(VARCHAR(32), nullable=False, server_default='')
+    uniprot_id = Column(VARCHAR(32), nullable=False, server_default='')
+    ucsc_id = Column(VARCHAR(32), nullable=False, server_default='')
+    status = Column(VARCHAR(32), nullable=False)
 
 
 class GenePreviousSymbols(Base):
-    name_id = Column(Integer, index=True)
-    previous_symbol = Column(VARCHAR(64), index=True)
+    name_id = Column(INTEGER(unsigned=True), index=True, nullable=False)
+    previous_symbol = Column(VARCHAR(64), index=True, nullable=False)
 
 
 class GeneSynonyms(Base):
-    name_id = Column(Integer, index=True)
-    synonym = Column(VARCHAR(64), index=True)
+    name_id = Column(INTEGER(unsigned=True), index=True, nullable=False)
+    synonym = Column(VARCHAR(64), index=True, nullable=False)
 
 
 def json_dumps(mapper, connection, target):
