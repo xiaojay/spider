@@ -106,14 +106,13 @@ for l in f.readlines():
     gene_name = GeneNames(**data)
     s.add(gene_name)
     s.commit()
-    id = gene_name.id
 
     if previous_symbols:
         for i in previous_symbols:
-            s.add(GenePreviousSymbols(name_id=id, previous_symbol=i))
+            s.add(GenePreviousSymbols(name_id=gene_name.id, previous_symbol=i))
     if synonyms:
         for i in synonyms:
-            s.add(GeneSynonyms(name_id=id, synonym=i))
+            s.add(GeneSynonyms(name_id=gene_name.id, synonym=i))
     s.commit()
 
 f.close()
