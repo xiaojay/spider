@@ -26,7 +26,7 @@ class Base(object):
         return re.sub('(?!^)([A-Z]+)', r'_\1', cls.__name__).lower()
 
 
-class Gene(Base):
+class GeneName(Base):
     name = Column(VARCHAR(64), index=True, nullable=False, unique=True)
 
 
@@ -48,11 +48,11 @@ s = sessionmaker(engine)()
 
 with open('ann4.txt', 'r', encoding='utf-8') as f:
     for l in f:
-        l = l.split('\t')
+        l = l.strip().split('\t')
 
-        gene = s.query(Gene).filter_by(name=l[3]).first()
+        gene = s.query(GeneName).filter_by(name=l[3]).first()
         if gene is None:
-            gene = Gene(name=l[3])
+            gene = GeneName(name=l[3])
             s.add(gene)
 
         snp = s.query(GeneSnp).filter_by(rsid=l[0]).first()

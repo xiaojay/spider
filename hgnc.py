@@ -93,7 +93,7 @@ for l in f.readlines():
             v = {}
             if m:
                 for i in m:
-                    v[i[0]] = i[1]
+                    v[i[1]] = i[0]
             v = json.dumps(v)
         else:
             v = v.strip()
