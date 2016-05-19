@@ -62,7 +62,7 @@ def json_dumps(mapper, connection, target):
     for i in ('accession_numbers', 'pubmed_ids', 'ccds_ids'):
         setattr(target, i, json.dumps(getattr(target, i)))
 
-event.listen(GeneNames, 'before_insert', json_dumps)
+event.listen(Gene, 'before_insert', json_dumps)
 
 r = requests.get('http://www.genenames.org/cgi-bin/download?col=gd_app_sym&col=gd_app_name&col=gd_prev_sym&col=gd_aliases&col=gd_pub_chrom_map&col=gd_hgnc_id&col=gd_pub_acc_ids&col=gd_pub_ensembl_id&col=gd_other_ids&col=gd_pubmed_ids&col=gd_ccds_ids&col=md_vega_id&col=gd_pub_eg_id&col=md_mim_id&col=md_refseq_id&col=md_prot_id&col=md_ucsc_id&col=gd_status&status=Approved&status=Entry+Withdrawn&status_opt=2&where=&order_by=gd_app_sym_sort&format=text&limit=&hgnc_dbtag=on&submit=submit')
 f = io.StringIO(r.text)
@@ -103,7 +103,7 @@ for l in f.readlines():
     previous_symbols = data.pop('previous_symbols')
     synonyms = data.pop('synonyms')
 
-    gene_name = GeneNames(**data)
+    gene_name = Gene(**data)
     s.add(gene_name)
     s.commit()
 
