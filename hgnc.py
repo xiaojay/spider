@@ -29,7 +29,7 @@ class Base(object):
         return re.sub('(?!^)([A-Z]+)', r'_\1', cls.__name__).lower()
 
 
-class GeneNames(Base):
+class Gene(Base):
     approved_symbol = Column(VARCHAR(64), index=True, nullable=False)
     approved_name = Column(VARCHAR(256), index=True, nullable=False)
     chromosome = Column(VARCHAR(64), index=True, nullable=False, server_default='')
